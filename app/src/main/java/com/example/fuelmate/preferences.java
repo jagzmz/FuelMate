@@ -1,5 +1,6 @@
 package com.example.fuelmate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,7 +32,9 @@ public class preferences extends Fragment  {
     private FirebaseUser mUser;
     private TextView curPref;
     private String pref,colg,name;
-    @Nullable
+
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -55,6 +58,7 @@ public class preferences extends Fragment  {
         mUser=FirebaseAuth.getInstance().getCurrentUser();
         curPref=(TextView)getView().findViewById(R.id.curPref);
 
+
         mDbRef= FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
 
         mDbRef.child("preferences").addValueEventListener(new ValueEventListener() {
@@ -75,7 +79,7 @@ public class preferences extends Fragment  {
 
         mDbRef= FirebaseDatabase.getInstance().getReference();
 
-        String[] items = new String[]{"Department","Campus"};
+        String[] items = new String[]{"Departments","Computer Technology","Information Technology","Electronics and telecommunication","Civil Engineering","Mechanical Engineering","Electrical Engineering"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,items);
         sp.setAdapter(adapter);

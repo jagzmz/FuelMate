@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                nav_pref.setText(dataSnapshot.child("preferences").getValue().toString());
+                nav_pref.setText(dataSnapshot.child("preference").getValue().toString());
             }
 
             @Override
