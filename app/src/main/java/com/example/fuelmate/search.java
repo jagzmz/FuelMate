@@ -100,6 +100,24 @@ public class search extends Fragment {
 
                      }
 
+                 holder.itemView.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         View v1 = v.findViewById(R.id.accept);
+                         View v2 = v.findViewById(R.id.information);
+
+                         if (v1.getVisibility() == View.GONE) {
+                             v1.setVisibility(View.VISIBLE);
+                             v2.setVisibility(View.VISIBLE);
+                         } else {
+                             v1.setVisibility(View.GONE);
+                             v2.setVisibility(View.GONE);
+                         }
+
+
+                     }
+                 });
+
 
              }
 
