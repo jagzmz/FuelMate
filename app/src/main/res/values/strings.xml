@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Fuel Mate</string>
+    <string name="create_account">Create Account</string>
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="register">Register</string>
+    <string name="default_username">Default Username</string>
+
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="preferences">Preferences</string>
+    <string name="change_password">Change Password</string>
+    <string name="log_out">Log Out</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="default_college">Default College</string>
+    <string name="default_preference">Default Preference</string>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/home" />
+
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search_black"
+            android:title="@string/search" />
+
+        <item
+            android:id="@+id/nav_pref"
+            android:icon="@drawable/ic_settings_black"
+            android:title="@string/preferences" />
+
+        <item
+            android:id="@+id/nav_changePass"
+            android:icon="@drawable/ic_vpn_key_black_24dp"
+            android:title="@string/change_password" />
+
+        <item
+            android:id="@+id/nav_logOut"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
+            android:title="@string/log_out" />
+
+    </group>
+
+
+    <!--<item android:title="Other">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:icon="@drawable/ic_vpn_key_black_24dp"-->
+                <!--android:title="Change Password" />-->
+
+            <!--<item-->
+                <!--android:icon="@drawable/ic_power_settings_new_black_24dp"-->
+                <!--android:title="Log Out" />-->
+        <!--</menu>-->
+    <!--</item>-->
+</menu>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "837029793853",
+    "firebase_url": "https://fuelmate-a9944.firebaseio.com",
+    "project_id": "fuelmate-a9944",
+    "storage_bucket": "fuelmate-a9944.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837029793853:android:a5768070e6a975a5",
+        "android_client_info": {
+          "package_name": "com.example.fuelmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837029793853-r4qfg4t9jaldjq525u2ko670f9qtm800.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fuelmate",
+            "certificate_hash": "bc114f4093983ef6035a36df2f0516ac50d1c4a5"
+          }
+        },
+        {
+          "client_id": "837029793853-gin570857h7hiq60d4oj3nkq1iplcbtt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoiXJYHdWKlm6U0mk2pWk4gceUDtXNbMQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837029793853-gin570857h7hiq60d4oj3nkq1iplcbtt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

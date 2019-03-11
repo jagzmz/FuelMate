@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".initial_activity"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:id="@+id/initialTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="Fuel Mate"
+        android:textColor="@color/textColor"
+        android:textSize="60sp"
+        app:fontFamily="@font/nova_square" />
+
+    <ProgressBar
+        android:id="@+id/initProcess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateOnly="true"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="70dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Checking User Information"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:layout_above="@id/initProcess"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        app:fontFamily="@font/nova_square" />
+
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/createAccountButton"
+        android:layout_width="300dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/loginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:background="@color/textColor"
+        android:backgroundTint="@color/textColor"
+        android:text="@string/create_account"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="gone" />
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/loginButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dp"
+        android:backgroundTint="@color/textColor"
+        android:background="@color/textColor"
+        android:text="@string/log_in"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="gone" />
+
+</RelativeLayout>
