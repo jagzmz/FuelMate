@@ -14,10 +14,9 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_weight="1"
+        android:foreground="?android:attr/selectableItemBackground"
         android:animateLayoutChanges="true">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,23 +60,23 @@
 
             </LinearLayout>
 
-            <android.support.design.button.MaterialButton
+            <Button
                 android:id="@+id/accept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Send Request"
-                android:background="@color/colorPrimary"
-                android:textAllCaps="false"
 
+                android:textAllCaps="false"
+                android:background="?android:attr/selectableItemBackground"
                 android:visibility="gone" />
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Show Information"
-
                 android:background="@color/colorPrimary"
+
+                android:text="Show Information"
                 android:textAllCaps="false"
                 android:visibility="gone" />
 
