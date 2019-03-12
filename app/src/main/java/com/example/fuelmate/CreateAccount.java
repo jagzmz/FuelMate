@@ -59,6 +59,7 @@ public class CreateAccount extends AppCompatActivity {
         email=(EditText)findViewById(R.id.email);
         pass=(EditText)findViewById(R.id.pass);
         addrR=(EditText)findViewById(R.id.addr);
+        deptT=(EditText)findViewById (R.id.dept);
         phoneE=(EditText)findViewById(R.id.phone);
         clgG=(EditText)findViewById(R.id.colg);
 
@@ -82,6 +83,7 @@ public class CreateAccount extends AppCompatActivity {
                 password=pass.getText().toString();
                 address=addrR.getText().toString();
                 phone=phoneE.getText().toString();
+                dept=deptT.getText ().toString ();
                 clg=clgG.getText().toString();
 
 
@@ -95,7 +97,7 @@ public class CreateAccount extends AppCompatActivity {
                 else {
                     proDiag.show();
                     proDiag.setCancelable(false);
-                    createAccount(name,emailId,password,address,phone,clg);
+                    createAccount(name,emailId,password,address,phone,clg,dept);
                 }
 
             }
@@ -103,7 +105,7 @@ public class CreateAccount extends AppCompatActivity {
 
     }
 
-    public void createAccount(final String name, final String emailId, String password, final String address, final String phone, final String clg) {
+    public void createAccount(final String name, final String emailId, String password, final String address, final String phone, final String clg ,final String dept) {
 
         mAuth.createUserWithEmailAndPassword(emailId,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -119,6 +121,7 @@ public class CreateAccount extends AppCompatActivity {
                     data.put("address",address.toLowerCase());
                     data.put("phone",phone.toLowerCase());
                     data.put("college",clg.toLowerCase());
+                    data.put("department",dept.toLowerCase ());
                     data.put("image","default");
                     data.put("imateT","defaultT");
                     data.put("preferences","null");

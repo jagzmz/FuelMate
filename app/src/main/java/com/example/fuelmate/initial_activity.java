@@ -50,7 +50,7 @@ public class initial_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_activity);
 
-
+//VERSION BECZ STATUSBAR COLOR ARE SUPPORTED ABOVE THE LOLLIPOP VERSION
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window= initial_activity.this.getWindow();
             window.setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
@@ -119,6 +119,8 @@ public class initial_activity extends AppCompatActivity {
                 }
 
         },1000);
+
+
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override

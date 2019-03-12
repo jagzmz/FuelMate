@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+
         mDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     nav_view.setCheckedItem(R.id.nav_pref);
                 }
             }
-        },2000);
+        },4000);
 
 
     }
