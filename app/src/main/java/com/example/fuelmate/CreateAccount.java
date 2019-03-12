@@ -159,7 +159,7 @@ public class CreateAccount extends AppCompatActivity {
                     task.toString();
                     Toast.makeText(CreateAccount.this,"Something went wrong.",Toast.LENGTH_LONG).show();
                     proDiag.dismiss();
-                    //Sneha
+                    //Snehaa
                 }
             }
         });
