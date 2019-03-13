@@ -52,7 +52,7 @@ public class search extends Fragment {
             }
         });
 
-        dep = ((TextView) getActivity().findViewById(R.id.nav_dep)).getText().toString();
+        //dep = ((TextView) getActivity().findViewById(R.id.nav_dep)).getText().toString();
         return inflater.inflate(R.layout.search_fragment, container, false);
     }
 

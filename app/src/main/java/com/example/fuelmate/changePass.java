@@ -67,7 +67,7 @@ public class changePass extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(getActivity().getApplicationContext(), "Password Updated Succesfully", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getActivity().getApplicationContext(), "Password Updated Successfully", Toast.LENGTH_LONG).show();
                                         } else {
                                             Toast.makeText(getActivity().getApplicationContext(), "Error Updating Password", Toast.LENGTH_LONG).show();
                                         }

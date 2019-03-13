@@ -30,7 +30,6 @@
 
     <string-array name="colleges">
         <item>Yeshwantrao Chavan College of Engineering</item>
-        <item>Shri Ramdeobaba College of Engineering and Management</item>
     </string-array>
 
     <string-array name="pref">

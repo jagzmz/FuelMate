@@ -185,6 +185,7 @@ public class CreateAccount extends AppCompatActivity {
                             {
                                 proDiag.dismiss();
                                 Intent i= new Intent(CreateAccount.this,MainActivity.class);
+                                i.addFlags (Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(i);
                                 finish();
                             }
