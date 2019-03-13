@@ -31,12 +31,28 @@ public class search extends Fragment {
 
     private RecyclerView mUsersList;
     private DatabaseReference mDbRef;
-    public static String pref, colg;
+    public static String pref, colg, dep;
+    private Query qry;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dep = dataSnapshot.getValue().toString();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        dep = ((TextView) getActivity().findViewById(R.id.nav_dep)).getText().toString();
         return inflater.inflate(R.layout.search_fragment, container, false);
     }
 
@@ -60,24 +76,29 @@ public class search extends Fragment {
         colg = ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString();
 
 
-        Query qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg);
+        if (!pref.equals("Department")) {
+            qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg);
+        } else {
+            qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg + "/" + dep);
 
 
-        FirebaseRecyclerOptions<users> options =
-                new FirebaseRecyclerOptions.Builder<users>()
-                        .setQuery(qry, new SnapshotParser<users>() {
-                            @NonNull
-                            @Override
-                            public users parseSnapshot(@NonNull DataSnapshot snapshot) {
-                                if (!snapshot.getKey().equals(mUser.getUid())) {
-                                    return new users(snapshot.child("name").getValue().toString(),
-                                            snapshot.child("college").getValue().toString());
-                                } else {
-                                    return new users();
-                                }
-                            }
-                        })
-                        .build();
+        }
+        FirebaseRecyclerOptions<users> options = null;
+
+        options = new FirebaseRecyclerOptions.Builder<users>()
+                .setQuery(qry, new SnapshotParser<users>() {
+                    @NonNull
+                    @Override
+                    public users parseSnapshot(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.getKey().equals(mUser.getUid())) {
+                            return new users(snapshot.child("name").getValue().toString(),
+                                    snapshot.child("college").getValue().toString());
+                        } else {
+                            return new users();
+                        }
+                    }
+                })
+                .build();
 
         FirebaseRecyclerAdapter<users, UserViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<users, UserViewHolder>(options) {
 

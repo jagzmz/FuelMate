@@ -8,8 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -19,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.HashMap;
 
@@ -28,7 +33,8 @@ public class CreateAccount extends AppCompatActivity {
     private Toolbar toolbar;
     private FirebaseAuth mAuth;
     private Button createAcc;
-    private EditText nameE,email,pass,addrR,phoneE,deptT,clgG;
+    private EditText nameE, email, pass, addrR, phoneE;
+    private AutoCompleteTextView deptT, clgG;
     private String name,emailId,password,address,phone,dept,clg;
     private ProgressDialog proDiag;
     private DatabaseReference database;
@@ -39,6 +45,7 @@ public class CreateAccount extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
 
 
@@ -59,9 +66,36 @@ public class CreateAccount extends AppCompatActivity {
         email=(EditText)findViewById(R.id.email);
         pass=(EditText)findViewById(R.id.pass);
         addrR=(EditText)findViewById(R.id.addr);
-        deptT=(EditText)findViewById (R.id.dept);
+        deptT = findViewById(R.id.dept);
+        deptT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                deptT.showDropDown();
+            }
+        });
+
+//        deptT.lis
+
         phoneE=(EditText)findViewById(R.id.phone);
-        clgG=(EditText)findViewById(R.id.colg);
+        clgG = (AutoCompleteTextView) findViewById(R.id.colg);
+        clgG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                clgG.showDropDown();
+            }
+        });
+
+
+        ArrayAdapter<CharSequence> depAdap = ArrayAdapter.createFromResource(CreateAccount.this, R.array.depts, R.layout.support_simple_spinner_dropdown_item);
+        depAdap.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        deptT.setAdapter(depAdap);
+
+
+        ArrayAdapter<CharSequence> colgAdap = ArrayAdapter.createFromResource(CreateAccount.this, R.array.colleges, R.layout.support_simple_spinner_dropdown_item);
+        colgAdap.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        clgG.setAdapter(colgAdap);
 
 
         //Progress Dialog
@@ -83,18 +117,27 @@ public class CreateAccount extends AppCompatActivity {
                 password=pass.getText().toString();
                 address=addrR.getText().toString();
                 phone=phoneE.getText().toString();
-                dept=deptT.getText ().toString ();
+                dept = deptT.getText().toString();
                 clg=clgG.getText().toString();
 
 
-                if(TextUtils.isEmpty(emailId))
+                if (TextUtils.isEmpty(name)) {
+                    nameE.setError("Enter Email Address");
+                } else if (TextUtils.isEmpty(emailId))
                 {
                     email.setError("Enter Email Address");
                 }
                 else if(TextUtils.isEmpty(password)){
                     pass.setError("Enter Password");
-                }
-                else {
+                } else if (TextUtils.isEmpty(address)) {
+                    pass.setError("Enter Address");
+                } else if (TextUtils.isEmpty(phone)) {
+                    pass.setError("Enter Phone");
+                } else if (TextUtils.isEmpty(dept)) {
+                    pass.setError("Enter Department");
+                } else if (TextUtils.isEmpty(clg)) {
+                    pass.setError("Enter College");
+                } else {
                     proDiag.show();
                     proDiag.setCancelable(false);
                     createAccount(name,emailId,password,address,phone,clg,dept);
@@ -116,12 +159,12 @@ public class CreateAccount extends AppCompatActivity {
 
                     HashMap<String,String> data = new HashMap<>();
 
-                    data.put("name",name.toLowerCase());
+                    data.put("name", name);
                     data.put("email",emailId.toLowerCase());
-                    data.put("address",address.toLowerCase());
+                    data.put("address", address);
                     data.put("phone",phone.toLowerCase());
-                    data.put("college",clg.toLowerCase());
-                    data.put("department",dept.toLowerCase ());
+                    data.put("college", clg);
+                    data.put("department", dept);
                     data.put("image","default");
                     data.put("imateT","defaultT");
                     data.put("preferences","null");

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DatabaseReference mDbRef;
     private FirebaseUser mUser;
     private TextView nav_username;
-    private TextView nav_college,nav_pref;
+    private TextView nav_college, nav_pref, nav_dep;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nav_username=(TextView)nav_view.getHeaderView(0).findViewById(R.id.nav_username);
         nav_college=(TextView)nav_view.getHeaderView(0).findViewById(R.id.nav_college);
         nav_pref=(TextView)nav_view.getHeaderView(0).findViewById(R.id.nav_pref);
+        nav_dep = (TextView) nav_view.getHeaderView(0).findViewById(R.id.nav_dep);
+
 
         drawer=findViewById(R.id.drawer_layout);
 
@@ -123,6 +125,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
                 nav_username.setText(dataSnapshot.child("name").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                nav_dep.setText(dataSnapshot.child("department").getValue().toString());
             }
 
             @Override

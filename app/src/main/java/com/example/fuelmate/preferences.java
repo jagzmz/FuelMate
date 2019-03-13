@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,18 +26,21 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.HashMap;
 
-public class preferences extends Fragment  {
+import static android.content.ContentValues.TAG;
 
-    private MaterialSpinner sp;
+public class preferences extends Fragment {
+
+    private AutoCompleteTextView sp;
     private Button setPref;
     private DatabaseReference mDbRef;
     private FirebaseUser mUser;
     private TextView curPref;
-    private String pref,colg,name;
+    private String pref, colg, name, dep;
+    private HashMap<String, String> dat;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
 
 
         return inflater.inflate(R.layout.preferences_fragment, container, false);
@@ -50,17 +56,25 @@ public class preferences extends Fragment  {
     public void onStart() {
         super.onStart();
 
-        sp=(MaterialSpinner) getView().findViewById(R.id.prefDrop);
-        setPref=(Button) getView().findViewById(R.id.setPref);
-        mUser=FirebaseAuth.getInstance().getCurrentUser();
-        curPref=(TextView)getView().findViewById(R.id.curPref);
+        sp = (AutoCompleteTextView) getView().findViewById(R.id.prefDrop);
+        setPref = (Button) getView().findViewById(R.id.setPref);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        curPref = (TextView) getView().findViewById(R.id.curPref);
 
-        mDbRef= FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
+        sp.setThreshold(100);
+        sp.setWidth(setPref.getWidth());
 
-        mDbRef.child("preferences").addValueEventListener(new ValueEventListener() {
+
+        dat = new HashMap<String, String>();
+
+
+        mDbRef = FirebaseDatabase.getInstance().getReference();
+
+        mDbRef.child("Users/" + mUser.getUid() + "/preferences").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                curPref.setText("Current Preference: "+dataSnapshot.getValue().toString().toString());
+                if (!dataSnapshot.getValue().toString().equals("null"))
+                    sp.setText(dataSnapshot.getValue().toString());
             }
 
             @Override
@@ -69,41 +83,108 @@ public class preferences extends Fragment  {
             }
         });
 
-        name=((TextView)getActivity().findViewById(R.id.nav_username)).getText().toString();
-        colg=((TextView)getActivity().findViewById(R.id.nav_college)).getText().toString();
-        pref=((TextView)getActivity().findViewById(R.id.nav_pref)).getText().toString();
+        name = ((TextView) getActivity().findViewById(R.id.nav_username)).getText().toString();
+        colg = ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString();
+        pref = ((TextView) getActivity().findViewById(R.id.nav_pref)).getText().toString();
 
-        mDbRef= FirebaseDatabase.getInstance().getReference();
 
-        String[] items = new String[]{"Department","Campus"};
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,items);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getView().getContext(), R.array.pref, R.layout.support_simple_spinner_dropdown_item);
         sp.setAdapter(adapter);
 
-        setPref.setOnClickListener(new View.OnClickListener() {
+        sp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-                String curP=curPref.getText().toString();
-
-                mDbRef.child("Users/"+mUser.getUid()+"/preferences").setValue(sp.getItems().get(sp.getSelectedIndex()).toString());
-
-                mDbRef.child("Preferences/"+pref+"/"+colg).child(mUser.getUid()).removeValue();
-
-
-                pref=sp.getItems().get(sp.getSelectedIndex()).toString();
-
-                HashMap<String,String> data=new HashMap<>();
-                data.put("name",name);
-                data.put("college",colg);
-
-                mDbRef.child("Preferences/"+pref+"/"+colg).child(mUser.getUid()).setValue(data);
+                sp.showDropDown();
 
 
             }
         });
+
+
+        mDbRef = FirebaseDatabase.getInstance().getReference();
+
+        mDbRef.child("Users/" + mUser.getUid() + "/preferences").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.getValue().toString().equals("null"))
+                    sp.setText(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        setPref.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!sp.getText().equals("")) {
+
+                    if (sp.getText().toString().contains("Department")) {
+                        mDbRef.child("Users/" + mUser.getUid() + "/preferences").setValue(sp.getText().toString());
+
+                        mDbRef.child("Users/" + mUser.getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                //Removing Campus values first
+                                mDbRef.child("Preferences/Campus/" + colg + "/" + mUser.getUid()).removeValue();
+
+
+                                dep = dataSnapshot.getValue().toString();
+
+                                dat.put("name", name);
+                                dat.put("college", colg);
+
+                                mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/" + mUser.getUid()).setValue(dat);
+
+                                dat.clear();
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                    } else {
+                        mDbRef.child("Users/" + mUser.getUid() + "/preferences").setValue(sp.getText().toString());
+
+                        mDbRef.child("Users/" + mUser.getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                dep = dataSnapshot.getValue().toString();
+
+                                mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/" + mUser.getUid()).removeValue();
+
+                                dat.put("name", name);
+                                dat.put("college", colg);
+
+                                mDbRef.child("Preferences/Campus/" + colg + "/" + mUser.getUid()).setValue(dat);
+
+                                dat.clear();
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                    }
+
+
+                }
+            }
+        });
+
 
     }
 }

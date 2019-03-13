@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center"
+    android:padding="20dp"
+    android:gravity="center_vertical"
     android:orientation="vertical">
 
+
     <TextView
+        android:id="@+id/curPref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:id="@+id/curPref"
-        android:text="Current Preference: null"/>
+        android:layout_gravity=""
+        android:layout_weight="3"
+        android:visibility="gone"
+        android:text="Current Preference: Not Set"
+        android:textSize="20sp" />
 
-
-
-
-    <com.jaredrummler.materialspinner.MaterialSpinner
+    <AutoCompleteTextView
         android:id="@+id/prefDrop"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="50dp"></com.jaredrummler.materialspinner.MaterialSpinner>
+        android:editable="false"
+        android:focusableInTouchMode="false"
+        android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+        android:hint="Choose one..."></AutoCompleteTextView>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/setPref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
         android:text="Set Preferences"
+        android:textAllCaps="false"
         android:textSize="20sp" />
 
 </LinearLayout>

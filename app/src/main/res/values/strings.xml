@@ -18,4 +18,25 @@
     <string name="address">Address</string>
     <string name="default_college">Default College</string>
     <string name="default_preference">Default Preference</string>
+
+
+    <string-array name="depts">
+        <item>Computer Technology</item>
+        <item>Information Technology</item>
+        <item>Electronics and Telecommunication</item>
+        <item>Civil Engineering</item>
+
+    </string-array>
+
+    <string-array name="colleges">
+        <item>Yeshwantrao Chavan College of Engineering</item>
+        <item>Shri Ramdeobaba College of Engineering and Management</item>
+    </string-array>
+
+    <string-array name="pref">
+        <item>Department</item>
+        <item>Campus</item>
+    </string-array>
+
+
 </resources>
