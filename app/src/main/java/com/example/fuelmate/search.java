@@ -27,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class search extends Fragment {
 
     private RecyclerView mUsersList;
@@ -103,7 +105,7 @@ public class search extends Fragment {
         FirebaseRecyclerAdapter<users, UserViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<users, UserViewHolder>(options) {
 
             @Override
-            protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull users model) {
+            protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull final users model) {
 
 
                 if (model.getName() == null) {
@@ -122,11 +124,30 @@ public class search extends Fragment {
                     }
                 });
 
+                mDbRef = FirebaseDatabase.getInstance().getReference();
+
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         View v1 = v.findViewById(R.id.accept);
                         View v2 = v.findViewById(R.id.information);
+
+
+                        v1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                HashMap<String, String> d = new HashMap<>();
+
+                                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+                                d.put("name", ((TextView) getActivity().findViewById(R.id.nav_username)).getText().toString());
+                                d.put("college", ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString());
+
+                                mDbRef.child("Friend-Req").child(model.getName()).child(mAuth.getUid()).setValue(d);
+
+                            }
+                        });
+
 
                         if (v1.getVisibility() == View.GONE) {
 
