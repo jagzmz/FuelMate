@@ -177,6 +177,7 @@ public class home extends Fragment {
                         .inflate(R.layout.single_user_view, parent, false);
 
                 NotificationCompat.Builder nb = new NotificationCompat.Builder(getContext());
+                nb.setSmallIcon(R.drawable.common_google_signin_btn_icon_dark);
                 nb.setContentTitle("New Friend Request");
                 nb.setContentText("You have a new Friend Request");
 
