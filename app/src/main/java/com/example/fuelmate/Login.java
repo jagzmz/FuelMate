@@ -156,7 +156,7 @@ public class Login extends AppCompatActivity {
 
                     }
 
-                    Toast.makeText(Login.this,"Something went wrong.",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this,task.getException ().getMessage (),Toast.LENGTH_LONG).show();
                    proDiag.dismiss();
                 }
             }
