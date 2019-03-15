@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -148,17 +149,25 @@ public class home extends Fragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        View v1 = v.findViewById(R.id.accept);
-                        View v2 = v.findViewById(R.id.information);
+                        View v1 = v.findViewById(R.id.phone1);
+                        //View v2 = v.findViewById(R.id.information);
+                        v1.setOnClickListener (new View.OnClickListener () {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(Intent.ACTION_DIAL);
+                                i.setData (Uri.parse ("tel:"+MainActivity.phone1));
+                                startActivity (i);
+                            }
+                        });
 
 
                         if (v1.getVisibility() == View.GONE) {
 
                             v1.setVisibility(View.VISIBLE);
-                            v2.setVisibility(View.VISIBLE);
+                          //  v2.setVisibility(View.VISIBLE);
                         } else {
                             v1.setVisibility(View.GONE);
-                            v2.setVisibility(View.GONE);
+                           // v2.setVisibility(View.GONE);
                         }
 
 

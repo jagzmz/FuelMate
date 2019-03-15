@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import static com.example.fuelmate.R.id.nav_req;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -43,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseUser mUser;
     private TextView nav_username;
     private TextView nav_college, nav_pref, nav_dep;
-    public static String name = null;
-
+    public static String name,phone1 = null;
+Button req;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +130,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 nav_username.setText(dataSnapshot.child("name").getValue().toString());
                 name = nav_username.getText().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        mDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+               // req=dataSnapshot.getRef ().child ("phone").toString ();
+                phone1=dataSnapshot.child("phone").getValue ().toString();
+
+
             }
 
             @Override

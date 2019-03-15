@@ -19,6 +19,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 public class Login extends AppCompatActivity {
 
@@ -136,12 +139,25 @@ public class Login extends AppCompatActivity {
                     proDiag.dismiss();
                     Intent i= new Intent(Login.this,MainActivity.class);
                     startActivity(i);
+                    Toast.makeText(Login.this,"Login Successfully.!!",Toast.LENGTH_LONG).show();
                     finish();
 
                 }
                 else {
+                    try {
+                        throw task.getException();
+
+                    } catch(FirebaseAuthInvalidCredentialsException e) {
+                        email.setError("Invalid email Id ");
+                        email.requestFocus();
+                    }
+
+                    catch(Exception e) {
+
+                    }
+
                     Toast.makeText(Login.this,"Something went wrong.",Toast.LENGTH_LONG).show();
-                    proDiag.dismiss();
+                   proDiag.dismiss();
                 }
             }
         });

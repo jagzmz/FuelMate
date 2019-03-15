@@ -1,5 +1,6 @@
 package com.example.fuelmate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -124,6 +125,9 @@ public class preferences extends Fragment {
                     if (sp.getText().toString().contains("Department")) {
                         mDbRef.child("Users/" + mUser.getUid() + "/preferences").setValue(sp.getText().toString());
 
+
+
+
                         mDbRef.child("Users/" + mUser.getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,10 +140,11 @@ public class preferences extends Fragment {
 
                                 dat.put("name", name);
                                 dat.put("college", colg);
-
                                 mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/" + mUser.getUid()).setValue(dat);
 
                                 dat.clear();
+
+
 
 
                             }
@@ -148,6 +153,7 @@ public class preferences extends Fragment {
                             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                             }
+
                         });
 
 
@@ -182,7 +188,11 @@ public class preferences extends Fragment {
 
 
                 }
+                getActivity ().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new search ()).commit();
+
             }
+
+
         });
 
 

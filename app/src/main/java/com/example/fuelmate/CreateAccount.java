@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -148,7 +152,7 @@ public class CreateAccount extends AppCompatActivity {
 
     }
 
-    public void createAccount(final String name, final String emailId, String password, final String address, final String phone, final String clg ,final String dept) {
+    public void createAccount(final String name, final String emailId, final String password, final String address, final String phone, final String clg , final String dept) {
 
         mAuth.createUserWithEmailAndPassword(emailId,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -200,10 +204,27 @@ public class CreateAccount extends AppCompatActivity {
 
                 }
                 else {
+
+                    try {
+                        throw task.getException();
+                    } catch(FirebaseAuthWeakPasswordException e) {
+                        pass.setError("Password is weak.");
+                        pass.requestFocus();
+                    } catch(FirebaseAuthInvalidCredentialsException e) {
+                        email.setError("Invalid emailId or password");
+                        email.requestFocus();
+                    } catch(FirebaseAuthUserCollisionException e) {
+                        email.setError("User exists..!!");
+                        email.requestFocus();
+                    } catch(Exception e) {
+
+                    }
+
+
                     task.toString();
                     Toast.makeText(CreateAccount.this,"Something went wrong.",Toast.LENGTH_LONG).show();
                     proDiag.dismiss();
-                    //Snehaa
+
                 }
             }
         });
