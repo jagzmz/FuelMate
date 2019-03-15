@@ -149,16 +149,19 @@ public class Login extends AppCompatActivity {
                         throw task.getException();
 
                     } catch(FirebaseAuthInvalidCredentialsException e) {
-                        email.setError("Invalid Email Id or Password is invalid.");
+                        email.setError("Invalid Email Id");
                         email.requestFocus();
+                        pass.setError ("Invalid Password");
                     } catch (FirebaseAuthInvalidUserException e) {
-                        email.setError("Invalid Email Id or Password is invalid.");
+                        email.setError("Invalid Email Id");
                         email.requestFocus();
+                        pass.setError ("Invalid Password");
                     }
 
                     catch(Exception e) {
 
                     }
+
 
                    // Toast.makeText(Login.this, task.getException().toString(), Toast.LENGTH_LONG).show();
                    proDiag.dismiss();
