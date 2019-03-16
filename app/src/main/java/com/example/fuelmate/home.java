@@ -1,9 +1,11 @@
 package com.example.fuelmate;
 
+import android.support.v7.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -138,40 +141,28 @@ public class home extends Fragment {
 
                 }
 
-                holder.root.setOnClickListener(new View.OnClickListener() {
+//                holder.root.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        v.findViewById(R.id.accept).setVisibility(View.GONE);
+//                    }
+//                });
+
+                holder.itemView.setOnClickListener (new View.OnClickListener () {
                     @Override
                     public void onClick(View v) {
-                        v.findViewById(R.id.accept).setVisibility(View.GONE);
+                        View v1=v.findViewById (R.id.phone1);
+
+                        if(v1.getVisibility ()==View.GONE)
+                            v1.setVisibility (View.VISIBLE);
+                        else
+                            v1.setVisibility (View.GONE);
                     }
                 });
 
                 mDbRef = FirebaseDatabase.getInstance().getReference();
 
-//                holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        View v1 = v.findViewById(R.id.phone1);
-//                        //View v2 = v.findViewById(R.id.information);
-//                        v1.setOnClickListener (new View.OnClickListener () {
-//                            @Override
-//                            public void onClick(View v) {
-//
-//                            }
-//                        });
-//
-//
-//                        if (v1.getVisibility() == View.GONE) {
-//
-//                            v1.setVisibility(View.VISIBLE);
-//                          //  v2.setVisibility(View.VISIBLE);
-//                        } else {
-//                            v1.setVisibility(View.GONE);
-//                           // v2.setVisibility(View.GONE);
-//                        }
-//
-//
-//                    }
-//                });
+
 
 
             }
@@ -205,6 +196,7 @@ public class home extends Fragment {
     public class UserViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout root;
+        String uname,name;
 
         public UserViewHolder(View itemV) {
             super(itemV);
@@ -215,6 +207,8 @@ public class home extends Fragment {
 
             TextView dname = root.findViewById(R.id.name);
             dname.setText(name);
+            this.uname=name;
+
         }
 
         public void setColg(String name) {
@@ -228,9 +222,33 @@ public class home extends Fragment {
             root.findViewById (R.id.phone1).setOnClickListener (new View.OnClickListener () {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(Intent.ACTION_DIAL);
-                    i.setData (Uri.parse ("tel:"+name));
-                    startActivity (i);
+
+                    AlertDialog.Builder ab= new AlertDialog.Builder (getContext ());
+                    ab.setTitle ("Calling "+uname+"...");
+                    ab.setMessage ("Are you sure?");
+                    ab.setPositiveButton ("Call", new DialogInterface.OnClickListener () {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss ();
+                            Intent i = new Intent(Intent.ACTION_DIAL);
+                            i.setData (Uri.parse ("tel:"+name));
+                            startActivity (i);
+                        }
+                    });
+
+                    ab.setNegativeButton ("Cancel", new DialogInterface.OnClickListener () {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    ab.setCancelable (false);
+                    AlertDialog a=ab.create ();
+                    a.show ();
+
+
                 }
             });
         }

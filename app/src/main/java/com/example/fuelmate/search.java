@@ -99,7 +99,7 @@ public class search extends Fragment {
                     public users parseSnapshot(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.getKey().equals(mUser.getUid())) {
                             return new users(snapshot.child("name").getValue().toString(),
-                                    snapshot.child("college").getValue().toString());
+                                    snapshot.child("college").getValue().toString(),snapshot.child ("phone").getValue ().toString ());
                         } else {
                             return new users();
                         }
@@ -141,12 +141,13 @@ public class search extends Fragment {
                         v1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                HashMap<String, String> d = new HashMap<>();
+                                final HashMap<String, String> d = new HashMap<>();
 
                                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
                                 d.put("name", ((TextView) getActivity().findViewById(R.id.nav_username)).getText().toString());
                                 d.put("college", ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString());
+                                d.put ("phone",model.getCell ());
 
                                 mDbRef.child("Friend-Req").child(model.getName()).child(mAuth.getUid()).setValue(d);
 
@@ -192,6 +193,7 @@ public class search extends Fragment {
 
         LinearLayout root;
 
+
         public UserViewHolder(View itemV) {
             super(itemV);
             root = itemView.findViewById(R.id.userSingleLayout);
@@ -208,5 +210,7 @@ public class search extends Fragment {
             TextView cname = root.findViewById(R.id.college);
             cname.setText(name);
         }
+
+
     }
 }

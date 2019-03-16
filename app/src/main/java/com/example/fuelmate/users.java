@@ -29,6 +29,12 @@ public class users {
         this.cell=cell;
     }
 
+    public users(String name, String colg) {
+        this.name = name;
+        this.colg = colg;
+        this.image = image;
+    }
+
     public String getName() {
         return name;
     }

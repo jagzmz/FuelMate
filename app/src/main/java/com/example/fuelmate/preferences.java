@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -168,7 +169,19 @@ private SharedPreferences.Editor se;
 
                     } else {
                         mDbRef.child("Users/" + mUser.getUid() + "/preferences").setValue(sp.getText().toString());
+                        mDbRef.child ("Users/"+mUser.getUid ()+"/phone").addListenerForSingleValueEvent (
+                                new ValueEventListener () {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        dat.put ("phone",dataSnapshot.getValue ().toString ());
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                }
+                        );
                         mDbRef.child("Users/" + mUser.getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -197,7 +210,10 @@ private SharedPreferences.Editor se;
 
 
                 }
-                getActivity ().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new search ()).commit();
+
+
+                        getActivity ().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new search ()).commit();
+
 
             }
 
