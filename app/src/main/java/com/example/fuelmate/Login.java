@@ -140,6 +140,8 @@ public class Login extends AppCompatActivity {
                     proDiag.dismiss();
                     Toast.makeText(Login.this,"Login Successfully.!!",Toast.LENGTH_LONG).show();
                     finish();
+                    Intent i= new Intent(Login.this,initial_activity.class);
+                    startActivity (i);
 
                 }
                 else {

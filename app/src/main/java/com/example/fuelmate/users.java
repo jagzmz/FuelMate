@@ -2,7 +2,19 @@ package com.example.fuelmate;
 
 public class users {
 
-    public String name,colg,image;
+    public String name;
+    public String colg;
+    public String image;
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }
+
+    public String cell;
 
 
     public users()
@@ -10,10 +22,11 @@ public class users {
         name=null;
     }
 
-    public users(String name, String colg) {
+    public users(String name, String colg,String cell) {
         this.name = name;
         this.colg = colg;
         this.image = image;
+        this.cell=cell;
     }
 
     public String getName() {

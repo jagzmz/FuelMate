@@ -116,7 +116,7 @@ public class home extends Fragment {
 //                        Toast.makeText(getContext(),snapshot.getKey(),Toast.LENGTH_LONG).show();
 
                         return new users(snapshot.child("name").getValue().toString(),
-                                snapshot.child("college").getValue().toString());
+                                snapshot.child("college").getValue().toString(),snapshot.child ("phone").getValue ().toString ());
 
                     }
                 })
@@ -134,6 +134,7 @@ public class home extends Fragment {
                 } else {
                     holder.setname(model.getName());
                     holder.setColg(model.getColg());
+                    holder.setcell(model.getCell ());
 
                 }
 
@@ -146,33 +147,31 @@ public class home extends Fragment {
 
                 mDbRef = FirebaseDatabase.getInstance().getReference();
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        View v1 = v.findViewById(R.id.phone1);
-                        //View v2 = v.findViewById(R.id.information);
-                        v1.setOnClickListener (new View.OnClickListener () {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(Intent.ACTION_DIAL);
-                                i.setData (Uri.parse ("tel:"+MainActivity.phone1));
-                                startActivity (i);
-                            }
-                        });
-
-
-                        if (v1.getVisibility() == View.GONE) {
-
-                            v1.setVisibility(View.VISIBLE);
-                          //  v2.setVisibility(View.VISIBLE);
-                        } else {
-                            v1.setVisibility(View.GONE);
-                           // v2.setVisibility(View.GONE);
-                        }
-
-
-                    }
-                });
+//                holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        View v1 = v.findViewById(R.id.phone1);
+//                        //View v2 = v.findViewById(R.id.information);
+//                        v1.setOnClickListener (new View.OnClickListener () {
+//                            @Override
+//                            public void onClick(View v) {
+//
+//                            }
+//                        });
+//
+//
+//                        if (v1.getVisibility() == View.GONE) {
+//
+//                            v1.setVisibility(View.VISIBLE);
+//                          //  v2.setVisibility(View.VISIBLE);
+//                        } else {
+//                            v1.setVisibility(View.GONE);
+//                           // v2.setVisibility(View.GONE);
+//                        }
+//
+//
+//                    }
+//                });
 
 
             }
@@ -222,6 +221,18 @@ public class home extends Fragment {
 
             TextView cname = root.findViewById(R.id.college);
             cname.setText(name);
+        }
+
+        public void setcell(final String name)
+        {
+            root.findViewById (R.id.phone1).setOnClickListener (new View.OnClickListener () {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_DIAL);
+                    i.setData (Uri.parse ("tel:"+name));
+                    startActivity (i);
+                }
+            });
         }
 
 
