@@ -212,7 +212,7 @@ private SharedPreferences.Editor se;
                 }
 
 
-                        getActivity ().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new search ()).commit();
+                        getFragmentManager ().beginTransaction().replace(R.id.fragment_container,new search ()).addToBackStack (null).commit();
 
 
             }
