@@ -229,7 +229,7 @@ Button req;
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new home()).commit();
                 break;
             case R.id.nav_search:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new search()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new search()).addToBackStack (null).commit();
                 break;
             case R.id.nav_pref:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new preferences()).commit();
