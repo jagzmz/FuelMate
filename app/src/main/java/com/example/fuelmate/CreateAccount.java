@@ -126,7 +126,7 @@ public class CreateAccount extends AppCompatActivity {
 
 
                 if (TextUtils.isEmpty(name)) {
-                    nameE.setError("Enter Email Address");
+                    nameE.setError("Enter Name");
                 } else if (TextUtils.isEmpty(emailId))
                 {
                     email.setError("Enter Email Address");
@@ -188,8 +188,7 @@ public class CreateAccount extends AppCompatActivity {
                             if(task.isSuccessful())
                             {
                                 proDiag.dismiss();
-                                Intent i= new Intent(CreateAccount.this,MainActivity.class);
-                                i.addFlags (Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Intent i= new Intent(CreateAccount.this,Login.class);
                                 startActivity(i);
                                 finish();
                             }
@@ -222,7 +221,7 @@ public class CreateAccount extends AppCompatActivity {
 
 
                     task.toString();
-                    Toast.makeText(CreateAccount.this,"Something went wrong.",Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateAccount.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
                     proDiag.dismiss();
 
                 }

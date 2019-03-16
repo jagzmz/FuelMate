@@ -1,6 +1,8 @@
 package com.example.fuelmate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,8 +32,8 @@ import java.util.HashMap;
 import static android.content.ContentValues.TAG;
 
 public class preferences extends Fragment {
-
-    private AutoCompleteTextView sp;
+private SharedPreferences.Editor se;
+    private AutoCompleteTextView sp,locality;
     private Button setPref;
     private DatabaseReference mDbRef;
     private FirebaseUser mUser;
@@ -58,6 +60,9 @@ public class preferences extends Fragment {
         super.onStart();
 
         sp = (AutoCompleteTextView) getView().findViewById(R.id.prefDrop);
+        locality = (AutoCompleteTextView) getView().findViewById(R.id.prefLocal);
+        locality.setThreshold (2);
+            se= getActivity ().getSharedPreferences ("localdata", Context.MODE_PRIVATE).edit ();
         setPref = (Button) getView().findViewById(R.id.setPref);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         curPref = (TextView) getView().findViewById(R.id.curPref);
@@ -91,6 +96,8 @@ public class preferences extends Fragment {
 
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getView().getContext(), R.array.pref, R.layout.support_simple_spinner_dropdown_item);
         sp.setAdapter(adapter);
+        final ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getView().getContext(), R.array.locality, R.layout.support_simple_spinner_dropdown_item);
+        locality.setAdapter(adapter1);
 
         sp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,8 +127,10 @@ public class preferences extends Fragment {
         setPref.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!sp.getText().equals("")) {
+                if (!sp.getText().equals("")&&!locality.equals ("")) {
 
+                        se.putString ("locality",locality.getText ().toString ());
+                        se.commit ();
                     if (sp.getText().toString().contains("Department")) {
                         mDbRef.child("Users/" + mUser.getUid() + "/preferences").setValue(sp.getText().toString());
 
@@ -133,14 +142,14 @@ public class preferences extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                 //Removing Campus values first
-                                mDbRef.child("Preferences/Campus/" + colg + "/" + mUser.getUid()).removeValue();
+                                mDbRef.child("Preferences/Campus/" + colg + "/" + locality.getText ().toString () + "/" + mUser.getUid()).removeValue();
 
 
                                 dep = dataSnapshot.getValue().toString();
 
                                 dat.put("name", name);
                                 dat.put("college", colg);
-                                mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/" + mUser.getUid()).setValue(dat);
+                                mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/" + locality.getText ().toString () + "/" + mUser.getUid()).setValue(dat);
 
                                 dat.clear();
 
@@ -165,12 +174,12 @@ public class preferences extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 dep = dataSnapshot.getValue().toString();
 
-                                mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/" + mUser.getUid()).removeValue();
+                                mDbRef.child("Preferences/Department/" + colg + "/" + locality.getText ().toString () + "/" + dep + "/" + mUser.getUid()).removeValue();
 
                                 dat.put("name", name);
                                 dat.put("college", colg);
 
-                                mDbRef.child("Preferences/Campus/" + colg + "/" + mUser.getUid()).setValue(dat);
+                                mDbRef.child("Preferences/Campus/" + colg + "/" + locality.getText ().toString () + "/" + mUser.getUid()).setValue(dat);
 
                                 dat.clear();
 

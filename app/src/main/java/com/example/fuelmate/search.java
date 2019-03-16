@@ -1,6 +1,8 @@
 package com.example.fuelmate;
 
 import android.app.usage.NetworkStats;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,6 +36,7 @@ public class search extends Fragment {
     private RecyclerView mUsersList;
     private DatabaseReference mDbRef;
     public static String pref, colg, dep;
+    private SharedPreferences se1;
     private Query qry;
 
 
@@ -61,7 +64,9 @@ public class search extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+            se1 = getActivity ().getSharedPreferences ("localdata", Context.MODE_PRIVATE);
+            String locality  = se1.getString ("locality","null");
+            Toast.makeText(getContext (),locality,Toast.LENGTH_LONG).show ();
         mUsersList = (RecyclerView) getView().findViewById(R.id.user_view);
         mUsersList.setHasFixedSize(true);
         mUsersList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -79,9 +84,9 @@ public class search extends Fragment {
 
 
         if (!pref.equals("Department")) {
-            qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg);
+            qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg +"/" + locality);
         } else {
-            qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg + "/" + dep);
+            qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg + "/" + dep + "/" + locality);
 
 
         }

@@ -36,6 +36,14 @@
         <item>Department</item>
         <item>Campus</item>
     </string-array>
+    <string-array name="locality">
+        <item>Sadar</item>
+        <item>Pratap Nagar</item>
+        <item>Jaripatka</item>
+        <item>Mankapur square</item>
+        <item>Khamla</item>
+        <item>Civil Lines</item>
+    </string-array>
 
 
 </resources>

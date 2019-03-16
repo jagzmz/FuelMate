@@ -138,8 +138,6 @@ public class Login extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     proDiag.dismiss();
-                    Intent i= new Intent(Login.this,MainActivity.class);
-                    startActivity(i);
                     Toast.makeText(Login.this,"Login Successfully.!!",Toast.LENGTH_LONG).show();
                     finish();
 
@@ -149,13 +147,13 @@ public class Login extends AppCompatActivity {
                         throw task.getException();
 
                     } catch(FirebaseAuthInvalidCredentialsException e) {
-                        email.setError("Invalid Email Id");
-                        email.requestFocus();
                         pass.setError ("Invalid Password");
+                        pass.requestFocus();
+
                     } catch (FirebaseAuthInvalidUserException e) {
                         email.setError("Invalid Email Id");
                         email.requestFocus();
-                        pass.setError ("Invalid Password");
+                       // pass.setError ("Invalid Password");
                     }
 
                     catch(Exception e) {
@@ -163,7 +161,7 @@ public class Login extends AppCompatActivity {
                     }
 
 
-                   // Toast.makeText(Login.this, task.getException().toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this, task.getException().getMessage (), Toast.LENGTH_LONG).show();
                    proDiag.dismiss();
                 }
             }

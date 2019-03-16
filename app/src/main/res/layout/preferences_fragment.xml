@@ -18,6 +18,14 @@
         android:text="Current Preference: Not Set"
         android:textSize="20sp" />
 
+
+    <AutoCompleteTextView
+        android:id="@+id/prefLocal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter locality "
+        ></AutoCompleteTextView>
+
     <AutoCompleteTextView
         android:id="@+id/prefDrop"
         android:layout_width="match_parent"
