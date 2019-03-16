@@ -162,6 +162,9 @@ private SharedPreferences.Editor se;
 
                                 dat.put("name", name);
                                 dat.put("college", colg);
+
+                                Toast.makeText (getContext (),dat.toString (),Toast.LENGTH_LONG).show ();
+
                                 mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/" + locality.getText ().toString () + "/" + mUser.getUid()).setValue(dat);
 
                                 dat.clear();
