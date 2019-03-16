@@ -174,7 +174,7 @@ private SharedPreferences.Editor se;
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 dep = dataSnapshot.getValue().toString();
 
-                                mDbRef.child("Preferences/Department/" + colg + "/" + locality.getText ().toString () + "/" + dep + "/" + mUser.getUid()).removeValue();
+                                mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/"+ locality.getText ().toString () +"/" + mUser.getUid()).removeValue();
 
                                 dat.put("name", name);
                                 dat.put("college", colg);
