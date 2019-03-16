@@ -144,7 +144,19 @@ private SharedPreferences.Editor se;
 
                                 //Removing Campus values first
                                 mDbRef.child("Preferences/Campus/" + colg + "/" + locality.getText ().toString () + "/" + mUser.getUid()).removeValue();
+                                mDbRef.child ("Users/"+mUser.getUid ()+"/phone").addListenerForSingleValueEvent (
+                                        new ValueEventListener () {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                dat.put ("phone",dataSnapshot.getValue ().toString ());
+                                            }
 
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        }
+                                );
 
                                 dep = dataSnapshot.getValue().toString();
 
@@ -212,10 +224,10 @@ private SharedPreferences.Editor se;
                 }
 
 
-                if (!getFragmentManager ().findFragmentByTag ("SEARCH").isDetached ())
-                {
+                //if (!getFragmentManager ().findFragmentByTag ("SEARCH").isDetached ())
+                //{
                     getFragmentManager ().beginTransaction ().remove (getFragmentManager ().findFragmentByTag ("SEARCH"));
-                }
+                //}
 
 
                         getFragmentManager ().beginTransaction().replace(R.id.fragment_container,new search ()).addToBackStack (null).commit();
