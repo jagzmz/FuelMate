@@ -47,6 +47,7 @@ public class home extends Fragment {
     private String name;
     public Pair<String, String> dat = null;
     private FirebaseUser mUser;
+    private FirebaseRecyclerAdapter<users, home.UserViewHolder> firebaseRecyclerAdapter;
 
 
     @Nullable
@@ -125,7 +126,7 @@ public class home extends Fragment {
                 })
                 .build();
 
-        FirebaseRecyclerAdapter<users, home.UserViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<users, home.UserViewHolder>(options) {
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<users, home.UserViewHolder>(options) {
 
             @Override
             protected void onBindViewHolder(@NonNull home.UserViewHolder holder, final int position, @NonNull final users model) {
@@ -187,9 +188,13 @@ public class home extends Fragment {
             }
         };
 
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         mUsersList.setAdapter(firebaseRecyclerAdapter);
-
-
         firebaseRecyclerAdapter.startListening();
     }
 

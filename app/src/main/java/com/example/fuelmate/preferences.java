@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,8 +41,8 @@ private SharedPreferences.Editor se;
     private DatabaseReference mDbRef;
     private FirebaseUser mUser;
     private TextView curPref;
-    private String pref, colg, name, dep;
-    private HashMap<String, String> dat;
+    private String pref, colg, name, dep, phone;
+    final private HashMap<String, String> dat = new HashMap<>();
 
     @Nullable
     @Override
@@ -72,7 +74,7 @@ private SharedPreferences.Editor se;
         sp.setWidth(setPref.getWidth());
 
 
-        dat = new HashMap<String, String>();
+//        dat = new HashMap<String, String>();
 
 
         mDbRef = FirebaseDatabase.getInstance().getReference();
@@ -93,6 +95,24 @@ private SharedPreferences.Editor se;
         name = ((TextView) getActivity().findViewById(R.id.nav_username)).getText().toString();
         colg = ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString();
         pref = ((TextView) getActivity().findViewById(R.id.nav_pref)).getText().toString();
+        mDbRef.child("Users/" + mUser.getUid() + "/phone").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                        phone = dataSnapshot.getValue().toString();
+
+//                                                Toast.makeText(getContext(),dat.toString(),Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                }
+        );
 
 
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getView().getContext(), R.array.pref, R.layout.support_simple_spinner_dropdown_item);
@@ -144,26 +164,15 @@ private SharedPreferences.Editor se;
 
                                 //Removing Campus values first
                                 mDbRef.child("Preferences/Campus/" + colg + "/" + locality.getText ().toString () + "/" + mUser.getUid()).removeValue();
-                                mDbRef.child ("Users/"+mUser.getUid ()+"/phone").addListenerForSingleValueEvent (
-                                        new ValueEventListener () {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                dat.put ("phone",dataSnapshot.getValue ().toString ());
-                                            }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        }
-                                );
 
                                 dep = dataSnapshot.getValue().toString();
 
                                 dat.put("name", name);
                                 dat.put("college", colg);
+                                dat.put("phone", phone);
 
-                                Toast.makeText (getContext (),dat.toString (),Toast.LENGTH_LONG).show ();
+//                                Toast.makeText(getContext(),dat.toString(),Toast.LENGTH_LONG).show();
 
                                 mDbRef.child("Preferences/Department/" + colg + "/" + dep + "/" + locality.getText ().toString () + "/" + mUser.getUid()).setValue(dat);
 
@@ -229,11 +238,26 @@ private SharedPreferences.Editor se;
 
                 //if (!getFragmentManager ().findFragmentByTag ("SEARCH").isDetached ())
                 //{
-                    getFragmentManager ().beginTransaction ().remove (getFragmentManager ().findFragmentByTag ("SEARCH"));
+
+                Fragment fm = getFragmentManager().findFragmentById(R.id.fragment_container);
+
+                FragmentTransaction ft;
+                if (fm != null) {
+                    ft = getFragmentManager().beginTransaction();
+//                    ft.remove(fm);
+////                    ft.commit();
+//                    ft.add(R.id.fragment_container,new search(),"SEARCH");
+
+//                    ft.replace(R.id.fragment_container,new search(),"SEARCH");
+
+//                    ft.commit();
+                }
+
+//                    getFragmentManager().findFragmentByTag("SEARCH").
                 //}
 
 
-                        getFragmentManager ().beginTransaction().replace(R.id.fragment_container,new search ()).addToBackStack (null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new search(), "SEARCH").commit();
 
 
             }

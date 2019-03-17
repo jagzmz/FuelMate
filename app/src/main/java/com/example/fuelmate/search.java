@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
+import static android.support.constraint.Constraints.TAG;
+
 public class search extends Fragment {
 
     private RecyclerView mUsersList;
@@ -38,25 +41,17 @@ public class search extends Fragment {
     public static String pref, colg, dep;
     private SharedPreferences se1;
     private Query qry;
-
+    private FirebaseRecyclerAdapter<users, UserViewHolder> firebaseRecyclerAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dep = dataSnapshot.getValue().toString();
 
-            }
+        Log.d(TAG, "parseSna: ");
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
+        Log.d(TAG, "parseSna: end");
         //dep = ((TextView) getActivity().findViewById(R.id.nav_dep)).getText().toString();
         return inflater.inflate(R.layout.search_fragment, container, false);
     }
@@ -65,10 +60,9 @@ public class search extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
             se1 = getActivity ().getSharedPreferences ("localdata", Context.MODE_PRIVATE);
-            String locality  = se1.getString ("locality","null");
-            Toast.makeText(getContext (),locality,Toast.LENGTH_LONG).show ();
+        final String locality = se1.getString("locality", "null");
         mUsersList = (RecyclerView) getView().findViewById(R.id.user_view);
-        mUsersList.setHasFixedSize(true);
+//        mUsersList.setHasFixedSize(true);
         mUsersList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
@@ -82,112 +76,143 @@ public class search extends Fragment {
         pref = ((TextView) getActivity().findViewById(R.id.nav_pref)).getText().toString();
         colg = ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString();
 
-
-        if (!pref.equals("Department")) {
-            qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg +"/" + locality);
-        } else {
-            qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg + "/" + dep + "/" + locality);
-
-
-        }
-        FirebaseRecyclerOptions<users> options = null;
-
-        options = new FirebaseRecyclerOptions.Builder<users>()
-                .setQuery(qry, new SnapshotParser<users>() {
-                    @NonNull
-                    @Override
-                    public users parseSnapshot(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.getKey().equals(mUser.getUid())) {
-                            return new users(snapshot.child("name").getValue().toString(),
-                                    snapshot.child("college").getValue().toString(),snapshot.child ("phone").getValue ().toString ());
-                        } else {
-                            return new users();
-                        }
-                    }
-                })
-                .build();
-
-        FirebaseRecyclerAdapter<users, UserViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<users, UserViewHolder>(options) {
-
+        FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull final users model) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dep = dataSnapshot.getValue().toString();
+                Log.d(TAG, "parseSna data : ");
 
-
-                if (model.getName() == null) {
-                    holder.itemView.setVisibility(View.GONE);
-                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                if (!pref.equals("Department")) {
+                    qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg + "/" + locality);
                 } else {
-                    holder.setname(model.getName());
-                    holder.setColg(model.getColg());
+                    qry = FirebaseDatabase.getInstance().getReference().child("Preferences/" + pref + "/" + colg + "/" + dep + "/" + locality);
+
 
                 }
 
-                holder.root.setOnClickListener(new View.OnClickListener() {
+                Log.d(TAG, "parseSna: " + qry.toString());
+                FirebaseRecyclerOptions<users> options = null;
+
+                options = new FirebaseRecyclerOptions.Builder<users>()
+                        .setQuery(qry, new SnapshotParser<users>() {
+                            @NonNull
+                            @Override
+                            public users parseSnapshot(@NonNull DataSnapshot snapshot) {
+                                if (!snapshot.getKey().equals(mUser.getUid())) {
+                                    Log.d("search", "parseSnapshot: loaded");
+                                    return new users(snapshot.child("name").getValue().toString(),
+                                            snapshot.child("college").getValue().toString(), snapshot.child("phone").getValue().toString());
+                                } else {
+                                    return new users();
+                                }
+                            }
+                        })
+                        .build();
+
+                firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<users, UserViewHolder>(options) {
+
                     @Override
-                    public void onClick(View v) {
-                        v.findViewById(R.id.accept).setVisibility(View.GONE);
-                    }
-                });
-
-                mDbRef = FirebaseDatabase.getInstance().getReference();
-
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        View v1 = v.findViewById(R.id.accept);
-                        View v2 = v.findViewById(R.id.information);
+                    protected void onBindViewHolder(@NonNull UserViewHolder holder, final int position, @NonNull final users model) {
 
 
-                        v1.setOnClickListener(new View.OnClickListener() {
+                        if (model.getName() == null) {
+                            holder.itemView.setVisibility(View.GONE);
+                            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                        } else {
+                            holder.setname(model.getName());
+                            holder.setColg(model.getColg());
+
+                        }
+
+                        holder.root.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final HashMap<String, String> d = new HashMap<>();
+                                v.findViewById(R.id.accept).setVisibility(View.GONE);
+                            }
+                        });
 
-                                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                        mDbRef = FirebaseDatabase.getInstance().getReference();
 
-                                d.put("name", ((TextView) getActivity().findViewById(R.id.nav_username)).getText().toString());
-                                d.put("college", ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString());
-                                d.put ("phone",model.getCell ());
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                View v1 = v.findViewById(R.id.accept);
+                                View v2 = v.findViewById(R.id.information);
 
-                                mDbRef.child("Friend-Req").child(model.getName()).child(mAuth.getUid()).setValue(d);
+
+                                v1.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        final HashMap<String, String> d = new HashMap<>();
+
+                                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+                                        d.put("name", ((TextView) getActivity().findViewById(R.id.nav_username)).getText().toString());
+                                        d.put("college", ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString());
+                                        d.put("phone", model.getCell());
+
+                                        mDbRef.child("Friend-Req").child(model.getName()).child(mAuth.getUid()).setValue(d);
+
+                                    }
+                                });
+
+
+                                if (v1.getVisibility() == View.GONE) {
+
+                                    v1.setVisibility(View.VISIBLE);
+                                    v2.setVisibility(View.VISIBLE);
+                                } else {
+                                    v1.setVisibility(View.GONE);
+                                    v2.setVisibility(View.GONE);
+                                }
+
 
                             }
                         });
 
 
-                        if (v1.getVisibility() == View.GONE) {
-
-                            v1.setVisibility(View.VISIBLE);
-                            v2.setVisibility(View.VISIBLE);
-                        } else {
-                            v1.setVisibility(View.GONE);
-                            v2.setVisibility(View.GONE);
-                        }
-
-
                     }
-                });
 
+                    @NonNull
+                    @Override
+                    public UserViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+
+
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.single_user_view, parent, false);
+
+                        return new UserViewHolder(view);
+                    }
+                };
+
+                firebaseRecyclerAdapter.notifyDataSetChanged();
+
+                Log.d(TAG, "parseSna: 1");
+                mUsersList.setAdapter(firebaseRecyclerAdapter);
+                Log.d(TAG, "parseSna: 2");
+                firebaseRecyclerAdapter.startListening();
 
             }
 
-            @NonNull
             @Override
-            public UserViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.single_user_view, parent, false);
-
-                return new UserViewHolder(view);
             }
-        };
-
-        mUsersList.setAdapter(firebaseRecyclerAdapter);
+        });
 
 
-        firebaseRecyclerAdapter.startListening();
+
+
+
+
+
+
+
+
+
+
     }
+
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
 
