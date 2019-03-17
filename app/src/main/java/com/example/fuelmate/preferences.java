@@ -68,7 +68,7 @@ private SharedPreferences.Editor se;
             se= getActivity ().getSharedPreferences ("localdata", Context.MODE_PRIVATE).edit ();
         setPref = (Button) getView().findViewById(R.id.setPref);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        curPref = (TextView) getView().findViewById(R.id.curPref);
+        curPref = (TextView) getView().findViewById(R.id.prefDrop);
 
         sp.setThreshold(100);
         sp.setWidth(setPref.getWidth());
@@ -151,6 +151,7 @@ private SharedPreferences.Editor se;
                 if (!sp.getText().equals("")&&!locality.equals ("")) {
 
                         se.putString ("locality",locality.getText ().toString ());
+                    se.putString("preferences", curPref.getText().toString());
                         se.commit ();
                     if (sp.getText().toString().contains("Department")) {
                         mDbRef.child("Users/" + mUser.getUid() + "/preferences").setValue(sp.getText().toString());

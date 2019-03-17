@@ -93,7 +93,7 @@ Button req;
         if(savedInstanceState==null) {
 
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new requests()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new home()).commit();
                 nav_view.setCheckedItem(R.id.nav_home);
 
         }
@@ -257,6 +257,9 @@ Button req;
                 ad.setCanceledOnTouchOutside(false);
                 ad.show();
 
+                break;
+            case R.id.nav_req:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new requests()).commit();
                 break;
         }
 

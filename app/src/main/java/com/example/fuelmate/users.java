@@ -5,6 +5,7 @@ public class users {
     public String name;
     public String colg;
     public String image;
+    private String uid;
 
     public String getCell() {
         return cell;
@@ -17,16 +18,31 @@ public class users {
     public String cell;
 
 
-    public users()
-    {
-        name=null;
+    public users() {
+        name = null;
     }
 
-    public users(String name, String colg,String cell) {
+    public users(String name, String colg, String cell) {
         this.name = name;
         this.colg = colg;
         this.image = image;
-        this.cell=cell;
+        this.cell = cell;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public users(String uid, String name, String colg, String cell) {
+        this.uid = uid;
+        this.name = name;
+        this.colg = colg;
+        this.image = image;
+        this.cell = cell;
     }
 
     public users(String name, String colg) {

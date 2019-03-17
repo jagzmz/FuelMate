@@ -70,6 +70,7 @@ public class search extends Fragment {
 
         se1 = getActivity().getSharedPreferences("localdata", Context.MODE_PRIVATE);
         final String locality = se1.getString("locality", "null");
+        pref = se1.getString("preferences", "null");
         mUsersList = (RecyclerView) getView().findViewById(R.id.user_view);
 //        mUsersList.setHasFixedSize(true);
         mUsersList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -82,7 +83,7 @@ public class search extends Fragment {
 
         mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
 
-        pref = ((TextView) getActivity().findViewById(R.id.nav_pref)).getText().toString();
+
         colg = ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString();
 
         FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -100,6 +101,8 @@ public class search extends Fragment {
 
                 }
 
+//                Toast.makeText(getContext(), qry.toString(), Toast.LENGTH_LONG).show();
+
                 Log.d(TAG, "parseSna: " + qry.toString());
                 FirebaseRecyclerOptions<users> options = null;
 
@@ -110,7 +113,7 @@ public class search extends Fragment {
                             public users parseSnapshot(@NonNull DataSnapshot snapshot) {
                                 if (!snapshot.getKey().equals(mUser.getUid())) {
                                     Log.d("search", "parseSnapshot: loaded");
-                                    return new users(snapshot.child("name").getValue().toString(),
+                                    return new users(snapshot.getKey(), snapshot.child("name").getValue().toString(),
                                             snapshot.child("college").getValue().toString(), snapshot.child("phone").getValue().toString());
                                 } else {
                                     return new users();
@@ -176,8 +179,20 @@ public class search extends Fragment {
                                     v2.setVisibility(View.GONE);
                                 }
 
+                                v2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        showinfo si = new showinfo();
+                                        Bundle b = new Bundle();
+                                        b.putString("uid", model.getUid());
+                                        si.setArguments(b);
 
+                                        getFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, si).commit();
+                                    }
+                                });
                             }
+
+
                         });
 
 
