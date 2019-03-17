@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class search extends Fragment {
     public static String pref, colg, dep;
     private SharedPreferences se1;
     private Query qry;
+    private ProgressBar pb;
     private FirebaseRecyclerAdapter<users, UserViewHolder> firebaseRecyclerAdapter;
 
     @Nullable
@@ -52,6 +54,8 @@ public class search extends Fragment {
 
 
         Log.d(TAG, "parseSna: end");
+
+
         //dep = ((TextView) getActivity().findViewById(R.id.nav_dep)).getText().toString();
         return inflater.inflate(R.layout.search_fragment, container, false);
     }
@@ -59,7 +63,12 @@ public class search extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-            se1 = getActivity ().getSharedPreferences ("localdata", Context.MODE_PRIVATE);
+
+        pb = getView().findViewById(R.id.sload);
+
+        pb.setVisibility(View.VISIBLE);
+
+        se1 = getActivity().getSharedPreferences("localdata", Context.MODE_PRIVATE);
         final String locality = se1.getString("locality", "null");
         mUsersList = (RecyclerView) getView().findViewById(R.id.user_view);
 //        mUsersList.setHasFixedSize(true);
@@ -79,6 +88,7 @@ public class search extends Fragment {
         FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 dep = dataSnapshot.getValue().toString();
                 Log.d(TAG, "parseSna data : ");
 
@@ -181,6 +191,9 @@ public class search extends Fragment {
                         View view = LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.single_user_view, parent, false);
 
+                        pb.setVisibility(View.GONE);
+
+
                         return new UserViewHolder(view);
                     }
                 };
@@ -199,16 +212,6 @@ public class search extends Fragment {
 
             }
         });
-
-
-
-
-
-
-
-
-
-
 
 
     }
