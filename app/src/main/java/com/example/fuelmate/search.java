@@ -161,13 +161,29 @@ public class search extends Fragment {
                                     public void onClick(View v) {
                                         final HashMap<String, String> d = new HashMap<>();
 
-                                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                                        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
                                         d.put("name", ((TextView) getActivity().findViewById(R.id.nav_username)).getText().toString());
                                         d.put("college", ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString());
-                                        d.put("phone", model.getCell());
 
-                                        mDbRef.child("Friend-Req").child(model.getName()).child(mAuth.getUid()).setValue(d).toString ();
+                                        FirebaseDatabase.getInstance ().getReference ().child ("Users/"+mAuth.getUid ()+"/phone").addListenerForSingleValueEvent (
+                                                new ValueEventListener () {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        d.put("phone", dataSnapshot.getValue ().toString ());
+                                                        Log.d (TAG, "onClick: setting cell as "+model.getCell ());
+                                                        mDbRef.child("Friend-Req").child(model.getName()).child(mAuth.getUid()).setValue(d).toString ();
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                }
+                                        );
+
+
+
 
 
 
