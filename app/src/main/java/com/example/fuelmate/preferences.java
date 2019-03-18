@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -256,8 +257,7 @@ private SharedPreferences.Editor se;
 
 //                    getFragmentManager().findFragmentByTag("SEARCH").
                 //}
-
-
+                ((NavigationView)getActivity ().findViewById (R.id.nav_view)).setCheckedItem (R.id.nav_search);
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, new search(), "SEARCH").commit();
 
 
