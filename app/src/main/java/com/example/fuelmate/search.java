@@ -88,7 +88,7 @@ public class search extends Fragment {
 
         FirebaseDatabase.getInstance().getReference().child("Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/department").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
 
                 dep = dataSnapshot.getValue().toString();
                 Log.d(TAG, "parseSna data : ");
@@ -113,6 +113,7 @@ public class search extends Fragment {
                             public users parseSnapshot(@NonNull DataSnapshot snapshot) {
                                 if (!snapshot.getKey().equals(mUser.getUid())) {
                                     Log.d("search", "parseSnapshot: loaded");
+                                    Log.d (TAG, "parseSnapshot: phonee "+snapshot.child ("phone").getValue ().toString ());
                                     return new users(snapshot.getKey(), snapshot.child("name").getValue().toString(),
                                             snapshot.child("college").getValue().toString(), snapshot.child("phone").getValue().toString());
                                 } else {
@@ -144,6 +145,8 @@ public class search extends Fragment {
                             }
                         });
 
+
+                        Log.d (TAG, "onClick: "+model.getName ());
                         mDbRef = FirebaseDatabase.getInstance().getReference();
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +167,9 @@ public class search extends Fragment {
                                         d.put("college", ((TextView) getActivity().findViewById(R.id.nav_college)).getText().toString());
                                         d.put("phone", model.getCell());
 
-                                        mDbRef.child("Friend-Req").child(model.getName()).child(mAuth.getUid()).setValue(d);
+                                        mDbRef.child("Friend-Req").child(model.getName()).child(mAuth.getUid()).setValue(d).toString ();
+
+
 
                                     }
                                 });

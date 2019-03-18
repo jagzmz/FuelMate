@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class requests extends Fragment {
 
@@ -110,7 +113,7 @@ public class requests extends Fragment {
                     public users parseSnapshot(@NonNull DataSnapshot snapshot) {
 
 //                        Toast.makeText(getContext(),snapshot.getKey(),Toast.LENGTH_LONG).show();
-
+                        Log.d (TAG, "parseSnapshot: phoneeReq "+snapshot.child ("phone").getValue ().toString ());
                         return new users(snapshot.child("name").getValue().toString(),
                                 snapshot.child("college").getValue().toString(), snapshot.child("phone").getValue().toString());
 
