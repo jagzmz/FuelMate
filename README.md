@@ -18,5 +18,5 @@ Search people around you who wants to share their ride with you to college. You 
 
   
 
-* **Sneha Nagdev**
-* **Mahesh Jaganiya**
+* **Sneha Nagdev** * [Github Link](https://github.com/sneha-nagdev03)
+* **Mahesh Jaganiya** * [Github Link](https://github.com/jagzmz)
