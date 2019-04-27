@@ -22,5 +22,5 @@ Search people around you who wants to share their ride with you to college. You 
 
   
 
-* **Sneha Nagdev**  [Git Profile Link](https://github.com/sneha-nagdev03)
-* **Mahesh Jaganiya**  [Git Profile Link](https://github.com/jagzmz)
+* [**Sneha Nagdev**](https://github.com/sneha-nagdev03)
+* [**Mahesh Jaganiya**](https://github.com/jagzmz)
