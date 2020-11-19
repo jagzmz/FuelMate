@@ -6,6 +6,13 @@ Search people around you who wants to share their ride with you to college. You 
  - Student living in the same locality
 
 
+## Authors
+
+  
+
+* [**Sneha Nagdev**](https://github.com/sneha-nagdev03)
+* [**Mahesh Jaganiya**](https://github.com/jagzmz)
+
 
 ## Built With
 
@@ -17,10 +24,3 @@ Search people around you who wants to share their ride with you to college. You 
 ## Screenshots
 ![](https://i.imgur.com/n68KFpG.jpg)
 
-
-## Authors
-
-  
-
-* [**Sneha Nagdev**](https://github.com/sneha-nagdev03)
-* [**Mahesh Jaganiya**](https://github.com/jagzmz)
